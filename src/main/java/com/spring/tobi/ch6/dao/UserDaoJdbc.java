@@ -1,4 +1,4 @@
-package com.spring.tobi.ch5.dao;
+package com.spring.tobi.ch6.dao;
 
 
 import com.spring.tobi.ch5.User;
@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-//@Component
+@Component
 @RequiredArgsConstructor
 public class UserDaoJdbc implements UserDao {
     private final JdbcTemplate jdbcTemplate;

@@ -27,14 +27,14 @@ public class UserServiceTest {
     @Test
     public void upgradeAllOrNothing() throws Exception{
         //given
-        User user = new User("testId","testName","testPwd",Level.SILVER, 40,1,"testEmail@test.com");
+        User user = new User("testId","testName","testPwd",2, 40,1,"testEmail@test.com");
         //when
         UserService userService1 = new UserService(transactionManager, userDao, mailSender);
         userService1.upgradeLevel(user);
 
         //then
         // 업그레이드 및 이메일 전송 완료
-        assertThat(user.getLevel()).isEqualTo(Level.GOLD);
+        assertThat(user.getLevel()).isEqualTo(3);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class UserServiceTest {
         //given
         MockMailSender mockMailSender = new MockMailSender();
         UserService userService = new UserService(transactionManager, userDao, mockMailSender);
-        User user = new User("testId","testName","testPwd",Level.SILVER, 40,1,"testEmail@test.com");
+        User user = new User("testId","testName","testPwd",2, 40,1,"testEmail@test.com");
 
         //when
         userService.upgradeLevel(user);

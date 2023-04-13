@@ -4,17 +4,13 @@ public class User {
     private String id;
     private String name;
     private String password;
-    private Level level;
+    private int level;
     private int login;
     private int recommend;
     private String email;
 
-    public String getEmail() {
-        return email;
-    }
-
     public User() {}
-    public User(String id, String name, String password, Level level, int login, int recommend, String email) {
+    public User(String id, String name, String password, int level, int login, int recommend, String email) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -69,18 +65,40 @@ public class User {
         this.password = password;
     }
 
-    public Level getLevel() {
-        return level;
+    public int getLevel() {
+        return this.level;
     }
 
-    public void setLevel(Level level) {
+    public Level getToEnumLevel() {
+        return Level.valueOf(this.level);
+    }
+
+    public void setLevel(int level) {
         this.level = level;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", level=" + level +
+                ", login=" + login +
+                ", recommend=" + recommend +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
     public void upgradeLevel() {
-        Level nextLevel = this.level.getNextLevel();
+        Level nextLevel = Level.valueOf(this.level).getNextLevel();
+
         if(nextLevel != null) {
-            this.level = nextLevel;
+            this.level = Level.valueOfLevel(nextLevel);
         } else {
             throw new IllegalStateException(this.level + "은 업그레이드 불가능");
         }

@@ -19,7 +19,7 @@ public enum Level {
         return this.nextLevel;
     }
 
-    public static Level valueOf(int value) {
+    public static Level valueOf(int value) throws AssertionError{
         switch (value) {
             case 1:
                 return BASIC;
@@ -29,6 +29,15 @@ public enum Level {
                 return GOLD;
             default:
                 throw new AssertionError("UnKnown value: " + value);
+        }
+    }
+
+    public static int valueOfLevel(Level level) throws AssertionError{
+        switch (level) {
+            case BASIC: return 1;
+            case SILVER: return 2;
+            case GOLD: return 3;
+            default: throw new AssertionError("Unknown Level: " + level);
         }
     }
 }

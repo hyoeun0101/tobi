@@ -70,7 +70,7 @@ public class User {
     }
 
     public Level getToEnumLevel() {
-        return Level.valueOf(this.level);
+        return Level.valueToLevel(this.level);
     }
 
     public void setLevel(int level) {
@@ -95,10 +95,10 @@ public class User {
     }
 
     public void upgradeLevel() {
-        Level nextLevel = Level.valueOf(this.level).getNextLevel();
+        Level nextLevel = Level.valueToLevel(this.level).getNextLevel();
 
         if(nextLevel != null) {
-            this.level = Level.valueOfLevel(nextLevel);
+            this.level = Level.valueToInt(nextLevel);
         } else {
             throw new IllegalStateException(this.level + "은 업그레이드 불가능");
         }

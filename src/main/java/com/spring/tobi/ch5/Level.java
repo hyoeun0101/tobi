@@ -19,7 +19,7 @@ public enum Level {
         return this.nextLevel;
     }
 
-    public static Level valueOf(int value) throws AssertionError{
+    public static Level valueToLevel(int value) throws AssertionError{
         switch (value) {
             case 1:
                 return BASIC;
@@ -32,7 +32,7 @@ public enum Level {
         }
     }
 
-    public static int valueOfLevel(Level level) throws AssertionError{
+    public static int valueToInt(Level level) throws AssertionError{
         switch (level) {
             case BASIC: return 1;
             case SILVER: return 2;

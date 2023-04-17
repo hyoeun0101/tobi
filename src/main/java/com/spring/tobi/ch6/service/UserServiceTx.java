@@ -24,11 +24,13 @@ public class UserServiceTx implements UserService{
 
     @Override
     public void add(User user) {
+        //메서드 구현과 위임
         userService.add(user);
     }
 
     @Override
     public void allUsersUpgradeLevel() {
+        // 메서드 구현, 부가기능 추가
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
 
         try {

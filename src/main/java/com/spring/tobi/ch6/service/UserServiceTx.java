@@ -9,7 +9,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
 
-@Service
+//@Service
 public class UserServiceTx implements UserService{
     UserService userService;
     PlatformTransactionManager transactionManager;
@@ -29,7 +29,7 @@ public class UserServiceTx implements UserService{
     }
 
     @Override
-    public void allUsersUpgradeLevel() {
+    public void allUsersUpgradeLevel() throws Exception{
         // 메서드 구현, 부가기능 추가
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
 

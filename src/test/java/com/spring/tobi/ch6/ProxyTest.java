@@ -1,18 +1,29 @@
 package com.spring.tobi.ch6;
 
+import com.spring.tobi.ch5.User;
+import com.spring.tobi.ch5.service.MockMailSender;
+import com.spring.tobi.ch6.dao.MockUserDao;
 import com.spring.tobi.ch6.proxy.Hello;
 import com.spring.tobi.ch6.proxy.HelloTarget;
 import com.spring.tobi.ch6.proxy.UppercaseHandler;
 import com.spring.tobi.ch6.proxy.HelloUppercase;
+import com.spring.tobi.ch6.proxy.TransactionHandler;
+import com.spring.tobi.ch6.service.UserService;
+import com.spring.tobi.ch6.service.UserServiceImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 
-public class ReflectionTest {
+public class ProxyTest {
     @Test
     public void invokeMethod() throws Exception {
         String name = "Spring";
@@ -52,7 +63,7 @@ public class ReflectionTest {
     @Test
     public void DynamicProxyTest() {
         String name = "Eunoo";
-        // 다이내믹 프록시 생성
+        // 다이내믹 프록시 생성하기
         Hello proxiedHello = (Hello) Proxy.newProxyInstance(
                 getClass().getClassLoader(),// 클래스 로더 제공
                 new Class[]{Hello.class},// 구현할 인터페이스
@@ -62,7 +73,7 @@ public class ReflectionTest {
         assertThat(proxiedHello.sayHello(name)).isEqualTo("HELLO EUNOO");
         assertThat(proxiedHello.sayHi(name)).isEqualTo("HI EUNOO");
         assertThat(proxiedHello.sayThankYou(name)).isEqualTo("THANK YOU EUNOO");
-
-
     }
+
+
 }

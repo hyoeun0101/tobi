@@ -9,6 +9,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @Service
@@ -35,11 +36,15 @@ public class UserServiceImpl implements UserService{
      * 트랜잭션 경계설정은 UserServiceTx로 분리하기.
      */
     @Override
-    public void allUsersUpgradeLevel() {
+    public void allUsersUpgradeLevel() throws InvocationTargetException {
         List<User> users = userDao.getAll();
         for(User user: users) {
             if(checkEnableLevelUp(user)) {
                 upgradeLevel(user);
+
+            }
+            if(executeTxRollback() && user.getId().equals("id3")) {
+                throw new InvocationTargetException(new RuntimeException("레벨 업그레이드 중 롤백"));
             }
         }
     }
@@ -126,6 +131,10 @@ public class UserServiceImpl implements UserService{
 //        this.mailSender.send(mailMessage);
         this.mailSender.send(user.getEmail());
 
+    }
+
+    private boolean executeTxRollback() {
+        return true;
     }
 
 }

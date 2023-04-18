@@ -3,10 +3,14 @@ package com.spring.tobi.ch6.proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+
+/**
+ * InvocationHandler의 구현체.
+ * 위임할 타겟 객체를 주입.
+ */
 public class UppercaseHandler implements InvocationHandler {
     Hello target;
 
-    //위임할 타겟 객체를 주입.
     public UppercaseHandler(Hello target) {
         this.target = target;
     }

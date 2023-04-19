@@ -29,7 +29,7 @@ public class UserServiceTx implements UserService{
     }
 
     @Override
-    public void allUsersUpgradeLevel() throws Exception{
+    public void allUsersUpgradeLevel(){
         // 메서드 구현, 부가기능 추가
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
 

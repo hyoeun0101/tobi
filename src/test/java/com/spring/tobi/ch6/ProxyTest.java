@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.*;
 
 public class ProxyTest {
     @Test
+    @DisplayName("리플랙션 사용하기")
     public void invokeMethod() throws Exception {
         String name = "Spring";
         // 직접 호출
@@ -51,6 +52,7 @@ public class ProxyTest {
     }
 
     @Test
+    @DisplayName("위임과 부가기능을 모두 처리하는 프록시 클래스 HelloUppercase")
     public void HelloUppercaseTest() {
         String name = "Eunoo";
         Hello proxiedHello = new HelloUppercase(new HelloTarget());
@@ -61,6 +63,7 @@ public class ProxyTest {
     }
 
     @Test
+    @DisplayName("다이내믹 프록시 적용")
     public void DynamicProxyTest() {
         String name = "Eunoo";
         // 다이내믹 프록시 생성하기

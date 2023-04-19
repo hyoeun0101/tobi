@@ -14,6 +14,7 @@ import com.spring.tobi.ch6.service.UserServiceTx;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -41,6 +42,7 @@ public class UserServiceTest {
 
 
     @Test
+    @DisplayName("프록시를 이용한 트랜잭션 테스트")
     public void upgradeAllOrNothing() throws Exception {
         //given
         UserServiceImpl userServiceImpl = new UserServiceImpl();
@@ -157,22 +159,42 @@ public class UserServiceTest {
         }
     }
     @Test
-    @DisplayName("다이내믹 프록시를 팩토리 빈을 통해 빈으로 등록한 후 사용")
+    @DisplayName("다이내믹 프록시 팩토리 빈을 이용한 트랜잭션 테스트")
     @DirtiesContext
     public void upgradeAllOrNothing2() throws Exception {
-        //타겟(UserServiceImpl) 생성
+        //테스트 타겟 생성. 원래는 TestUserServiceImpl를 생성한다.
         UserServiceImpl userServiceImpl = new UserServiceImpl();
         MockMailSender mockMailSender = new MockMailSender();
         userServiceImpl.setMailSender(mockMailSender);
         MockUserDao mockUserDao = new MockUserDao(TestUser.getUsers());
         userServiceImpl.setUserDao(mockUserDao);
 
-        // 팩토리 빈 자체 가져와서 getObject를 호출하여 다이내믹 프록시 반환.
-        TxProxyFactoryBean txProxyFactoryBean = context.getBean("userService", TxProxyFactoryBean.class);
-        txProxyFactoryBean.setTarget(userServiceImpl);
+        //테스트 시, 다이내믹 프록시의 타깃을 변경하는 법:  팩토리 빈의 객체를 가져와 타깃 변경하기
+        // 컨테이너에서 팩토리 빈의 객체를 가져와 타깃을 바꿔준다.
+        TxProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", TxProxyFactoryBean.class);
+        txProxyFactoryBean.setTarget(userServiceImpl);  // txProxyFactoryBean.setTarget(testUserServiceImpl);
+        // 테스트를 위해 타깃을 변경한 다이내믹 프록시
         UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 
     }
+
+    @Test
+    @DisplayName("ProxyFactoryBean을 이용한 트랜잭션 테스트")
+    public void upgradeAllOrNothing3() {
+        //테스트 타겟 생성.
+        UserServiceImpl userServiceImpl = new UserServiceImpl();
+        MockMailSender mockMailSender = new MockMailSender();
+        userServiceImpl.setMailSender(mockMailSender);
+        MockUserDao mockUserDao = new MockUserDao(TestUser.getUsers());
+        userServiceImpl.setUserDao(mockUserDao);
+
+        ProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", ProxyFactoryBean.class);
+        txProxyFactoryBean.setTarget(userServiceImpl);
+        UserService txUserService = (UserService) txProxyFactoryBean.getObject();
+
+        txUserService.allUsersUpgradeLevel();
+    }
+
 
 
 }

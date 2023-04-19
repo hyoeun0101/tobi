@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
     void add(User user);
-    void allUsersUpgradeLevel() throws Exception;
+    void allUsersUpgradeLevel();
 
     List<User> getAllUser();
 }

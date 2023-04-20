@@ -1,19 +1,20 @@
 package com.spring.tobi;
 
-import com.spring.tobi.ch6.proxy.MessageFactoryBean;
-import com.spring.tobi.ch6.proxy.TxProxyFactoryBean;
+import com.spring.tobi.ch6.proxyFactoryBean.MessageFactoryBean;
+import com.spring.tobi.ch6.proxyFactoryBean.NameMatchClassMethodPointcut;
 import com.spring.tobi.ch6.proxyFactoryBean.TransactionAdvice;
-import com.spring.tobi.ch6.service.UserService;
 import com.spring.tobi.ch6.service.UserServiceImpl;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.framework.ProxyFactoryBean;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -64,12 +65,12 @@ public class AppConfig {
 //
 //    }
 
-    @Bean
-    public Pointcut transactionPointcut() {
-        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
-        pointcut.setMappedName("allUsers*");
-        return pointcut;
-    }
+//    @Bean
+//    public Pointcut transactionPointcut() {
+//        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
+//        pointcut.setMappedName("allUsers*");
+//        return pointcut;
+//    }
 
     @Autowired
     TransactionAdvice transactionAdvice;
@@ -89,6 +90,29 @@ public class AppConfig {
         pfBean.setInterceptorNames("transactionAdvisor");
         return pfBean;
     }
+
+    /**
+     * 빈 전처리기.
+     * 모든 빈에 포인트컷을 적용하고, 해당하면 프록시를 만들어 원래 빈 오브젝트와 바꿔치기한다.
+     * 빈 오브젝트는 프록시를 통해서만 접근 할 수 있다.
+     */
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        return new DefaultAdvisorAutoProxyCreator();
+    }
+
+    /**
+     * 클래스 이름, 메소드 이름 패턴 적용한 포인트컷
+     */
+    @Bean
+    public Pointcut transactionPointcut() {
+        NameMatchClassMethodPointcut pointcut = new NameMatchClassMethodPointcut();
+        pointcut.setMappedClassName("*ServiceImpl"); // 프록시를 생성할 클래스 이름 패턴
+        pointcut.setMappedName("all*"); // 어드바이스를 적용할 메소드 이름 패턴
+        return pointcut;
+    }
+
+
 
 
 

@@ -1,4 +1,4 @@
-package com.spring.tobi.ch6.proxy;
+package com.spring.tobi.ch6.proxyFactoryBean;
 
 public class Message {
     String text;

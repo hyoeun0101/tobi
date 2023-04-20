@@ -6,14 +6,13 @@ import com.spring.tobi.ch5.service.MockMailSender;
 import com.spring.tobi.ch6.dao.MockUserDao;
 import com.spring.tobi.ch6.dao.UserDao;
 import com.spring.tobi.ch5.service.MailSender;
-import com.spring.tobi.ch6.proxy.TransactionHandler;
-import com.spring.tobi.ch6.proxy.TxProxyFactoryBean;
+import com.spring.tobi.ch6.proxyFactoryBean.TransactionHandler;
+import com.spring.tobi.ch6.proxyFactoryBean.TxProxyFactoryBean;
 import com.spring.tobi.ch6.service.UserService;
 import com.spring.tobi.ch6.service.UserServiceImpl;
 import com.spring.tobi.ch6.service.UserServiceTx;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -193,8 +192,13 @@ public class UserServiceTest {
         UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 
         txUserService.allUsersUpgradeLevel();
+
+
+        //then
+        List<User> updatedUsers = mockUserDao.getUpdatedUsers();
+        assertThat(updatedUsers.size()).isEqualTo(2);
+        checkUserAndLevel(updatedUsers.get(0),"id2",2);
+        checkUserAndLevel(updatedUsers.get(1), "id5", 3);
     }
-
-
 
 }

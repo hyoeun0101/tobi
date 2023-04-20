@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService{
      * 레벨 업그레이드 시 이메일 전송하기
      * @param user
      */
-    public void upgradeLevel(User user) {
+    protected void upgradeLevel(User user) {
         user.upgradeLevel();
         userDao.update(user);
         sendUpgradeMail(user);

@@ -1,7 +1,7 @@
 package com.spring.tobi.ch6;
 
-import com.spring.tobi.ch6.proxy.Message;
-import com.spring.tobi.ch6.proxy.MessageFactoryBean;
+import com.spring.tobi.ch6.proxyFactoryBean.Message;
+import com.spring.tobi.ch6.proxyFactoryBean.MessageFactoryBean;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +30,6 @@ public class FactoryBeanTest {
         Object factory = context.getBean("&message");
         assertThat(factory.getClass()).isEqualTo(MessageFactoryBean.class);
     }
+
+
 }

@@ -1,6 +1,5 @@
-package com.spring.tobi.ch6.proxy;
+package com.spring.tobi.ch6.proxyFactoryBean;
 
-import com.spring.tobi.ch6.proxy.Message;
 import org.springframework.beans.factory.FactoryBean;
 
 public class MessageFactoryBean implements FactoryBean<Message> {

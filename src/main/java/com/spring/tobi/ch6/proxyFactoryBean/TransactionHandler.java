@@ -1,4 +1,4 @@
-package com.spring.tobi.ch6.proxy;
+package com.spring.tobi.ch6.proxyFactoryBean;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;

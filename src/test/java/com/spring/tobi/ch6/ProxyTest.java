@@ -1,24 +1,14 @@
 package com.spring.tobi.ch6;
 
-import com.spring.tobi.ch5.User;
-import com.spring.tobi.ch5.service.MockMailSender;
-import com.spring.tobi.ch6.dao.MockUserDao;
 import com.spring.tobi.ch6.proxy.Hello;
 import com.spring.tobi.ch6.proxy.HelloTarget;
 import com.spring.tobi.ch6.proxy.UppercaseHandler;
 import com.spring.tobi.ch6.proxy.HelloUppercase;
-import com.spring.tobi.ch6.proxy.TransactionHandler;
-import com.spring.tobi.ch6.service.UserService;
-import com.spring.tobi.ch6.service.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 

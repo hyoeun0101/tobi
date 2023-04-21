@@ -3,6 +3,7 @@ package com.spring.tobi.ch6;
 import com.spring.tobi.ch6.proxy.Hello;
 import com.spring.tobi.ch6.proxy.HelloTarget;
 import com.spring.tobi.ch6.proxy.UppercaseHandler;
+import com.spring.tobi.ch6.service.UserService;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +13,7 @@ import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -116,5 +118,6 @@ public class DynamicProxyTest {
             assertThat(proxiedHello.sayThankYou("Eunoo")).isEqualTo("Thank you Eunoo");
         }
     }
+
 
 }

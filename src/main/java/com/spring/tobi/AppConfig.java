@@ -51,7 +51,7 @@ public class AppConfig {
 
     /**
      * 팩토리 빈을 사용하여 다이내믹 프록시를 빈으로 등록.
-     *
+     * 대신 스프링에서 지원하는 ProxyFactoryBean을 사용하자.
      */
 //    @Bean
 //    public TxProxyFactoryBean userService() {
@@ -65,10 +65,14 @@ public class AppConfig {
 //
 //    }
 
+
+    /**
+     * 어드바이스 적용할 메소드 이름 패턴 지정 역할만 가진 포인트컷.
+     */
 //    @Bean
 //    public Pointcut transactionPointcut() {
 //        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
-//        pointcut.setMappedName("allUsers*");
+//        pointcut.setMappedName("allUser*");
 //        return pointcut;
 //    }
 
@@ -78,10 +82,17 @@ public class AppConfig {
     public PointcutAdvisor transactionAdvisor() {
         DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();
         advisor.setPointcut(transactionPointcut());
+
+        transactionAdvice.setTransactionManager(transactionManager());
         advisor.setAdvice(transactionAdvice);
         return advisor;
     }
 
+    /**
+     * ProxyFactoryBean이 다이내믹 프록시를 생성해준다.
+     * DefaultAdvisorAutoProxyCreator를 빈으로 등록하면 자동으로 프록시 생성하기 때문에
+     * 필요없다!
+     */
     @Bean
     public ProxyFactoryBean userService() {
         ProxyFactoryBean pfBean = new ProxyFactoryBean();
@@ -107,8 +118,8 @@ public class AppConfig {
     @Bean
     public Pointcut transactionPointcut() {
         NameMatchClassMethodPointcut pointcut = new NameMatchClassMethodPointcut();
-        pointcut.setMappedClassName("*ServiceImpl"); // 프록시를 생성할 클래스 이름 패턴
-        pointcut.setMappedName("all*"); // 어드바이스를 적용할 메소드 이름 패턴
+        pointcut.setMappedClassName("UserService*"); // 프록시를 생성할 클래스 이름 패턴
+        pointcut.setMappedName("*"); // 어드바이스를 적용할 메소드 이름 패턴
         return pointcut;
     }
 

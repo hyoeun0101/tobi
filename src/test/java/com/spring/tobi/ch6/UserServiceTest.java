@@ -187,18 +187,46 @@ public class UserServiceTest {
         MockUserDao mockUserDao = new MockUserDao(TestUser.getUsers());
         userServiceImpl.setUserDao(mockUserDao);
 
+        //애플리케이션 컨텍스트에서 프록시 팩토리 빈을 반환, 타겟 지정, 프록시 빈 생성.
         ProxyFactoryBean txProxyFactoryBean = context.getBean("&userService", ProxyFactoryBean.class);
         txProxyFactoryBean.setTarget(userServiceImpl);
         UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 
         txUserService.allUsersUpgradeLevel();
 
-
         //then
         List<User> updatedUsers = mockUserDao.getUpdatedUsers();
         assertThat(updatedUsers.size()).isEqualTo(2);
         checkUserAndLevel(updatedUsers.get(0),"id2",2);
         checkUserAndLevel(updatedUsers.get(1), "id5", 3);
+    }
+
+
+//    @Test
+//    @DisplayName("자동 프록시 생성을 이용한 트랜잭션 테스트")
+//    public void upgradeAllOrNothing4() {
+//        //테스트 타겟 생성.
+//        MockMailSender mockMailSender = new MockMailSender();
+//        userServiceImpl.setMailSender(mockMailSender);
+//        MockUserDao mockUserDao = new MockUserDao(TestUser.getUsers());
+//        userServiceImpl.setUserDao(mockUserDao);
+//
+//        userServiceImpl.allUsersUpgradeLevel();
+//        //then
+//        List<User> updatedUsers = mockUserDao.getUpdatedUsers();
+//        assertThat(updatedUsers.size()).isEqualTo(2);
+//        checkUserAndLevel(updatedUsers.get(0),"id2",2);
+//        checkUserAndLevel(updatedUsers.get(1), "id5", 3);
+//    }
+
+
+    @Autowired
+    UserService userServiceImpl;
+
+    @Test
+    @DisplayName("자동 프록시 생성기로 프록시가 반환되는지 확인")
+    public void advisorAutoProxyCreator() {
+        assertThat(userServiceImpl).isEqualTo(java.lang.reflect.Proxy.class);
     }
 
 }

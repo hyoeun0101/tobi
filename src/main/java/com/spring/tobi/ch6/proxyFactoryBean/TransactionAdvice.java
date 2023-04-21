@@ -9,13 +9,17 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Component
-@RequiredArgsConstructor
 public class TransactionAdvice implements MethodInterceptor {
-    private final PlatformTransactionManager transactionManager;
+    private  PlatformTransactionManager transactionManager;
+    private int count;
 
+    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
+    }
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
+        System.out.println("Advice 거침");
         TransactionStatus status = this.transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
             // 콜백을 호출해서 타깃의 메소드 실행.
